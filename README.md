@@ -21,6 +21,5 @@ redis.increment(key, ttlSec)  // atomic INCR + EXPIRE in one script
 - No offline queue: while disconnected, commands reject right away instead
   of queuing, so callers can fail soft without stalling the caller.
 
-See [`@vicstack/cache`](https://github.com/FranciscoAVD/cache) for a
-Better-Auth `secondaryStorage` adapter and Hono rate-limit middleware built
-on top of this.
+See [`@vicstack/rate-limit`](https://github.com/FranciscoAVD/rate-limit) for
+Hono rate-limit middleware built on top of this.
