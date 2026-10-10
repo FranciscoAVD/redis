@@ -31,6 +31,7 @@ export function createRedis({ url, onError = defaultOnError }: RedisOptions) {
     enableOfflineQueue: false,
   });
 
+  let connected = false;
   let reconnecting = false;
 
   // Bun stops reconnecting once `maxRetries` is spent and never retries on
@@ -42,18 +43,25 @@ export function createRedis({ url, onError = defaultOnError }: RedisOptions) {
       const [, error] = await tryCatch(client.connect());
       reconnecting = false;
       if (error) scheduleReconnect();
+      else connected = true;
     }, RECONNECT_INTERVAL_MS).unref();
   }
 
   client.onclose = (error) => {
-    // failed reconnect attempts close again; only report the first close of an outage
-    if (!reconnecting) onError(error, "redis.close");
+    // `onclose` also fires on a failed initial connect, which is already
+    // reported via "redis.connect" below — only report drops of a
+    // connection that had actually been established
+    if (connected) onError(error, "redis.close");
+    connected = false;
     scheduleReconnect();
   };
 
   // never rejects: a failed first attempt schedules a reconnect and resolves `false`
   const ready: Promise<boolean> = tryCatch(client.connect()).then(([, error]) => {
-    if (!error) return true;
+    if (!error) {
+      connected = true;
+      return true;
+    }
     onError(error, "redis.connect");
     scheduleReconnect();
     return false;

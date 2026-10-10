@@ -10,7 +10,7 @@ describe("createRedis", () => {
     });
 
     expect(await ready).toBe(false);
-    expect(errors).toContain("redis.connect");
+    expect(errors).toEqual(["redis.connect"]);
   });
 
   test("exposes a client and an increment function", () => {
