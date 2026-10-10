@@ -1,0 +1,48 @@
+{
+  "name": "@vicstack/redis",
+  "version": "0.1.0",
+  "description": "Bun RedisClient wrapper with auto-reconnect and an atomic increment-with-TTL primitive.",
+  "license": "MIT",
+  "author": "Victoriano <fvictoriano.dev@gmail.com>",
+  "keywords": ["redis", "bun", "cache"],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FranciscoAVD/redis.git"
+  },
+  "bugs": {
+    "url": "https://github.com/FranciscoAVD/redis/issues"
+  },
+  "homepage": "https://github.com/FranciscoAVD/redis#readme",
+  "engines": {
+    "bun": ">=1.2"
+  },
+  "type": "module",
+  "module": "./dist/index.js",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": ["dist", "README.md", "LICENSE"],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "rm -rf dist && tsc -p tsconfig.build.json && bun build ./src/index.ts --outdir ./dist --target bun --format esm",
+    "test": "bun test",
+    "prepublishOnly": "bun run test && bun run build"
+  },
+  "dependencies": {
+    "@vicstack/try-catch": "^0.1.1"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^5"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}
