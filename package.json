@@ -1,6 +1,6 @@
 {
   "name": "@vicstack/redis",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Bun RedisClient wrapper with auto-reconnect and an atomic increment-with-TTL primitive.",
   "license": "MIT",
   "author": "Victoriano <fvictoriano.dev@gmail.com>",
@@ -31,7 +31,7 @@
     "access": "public"
   },
   "scripts": {
-    "build": "rm -rf dist && tsc -p tsconfig.build.json && bun build ./src/index.ts --outdir ./dist --target bun --format esm",
+    "build": "rm -rf dist && tsc -p tsconfig.build.json && bun build ./src/index.ts --outdir ./dist --target bun --format esm --external '@vicstack/*'",
     "test": "bun test",
     "prepublishOnly": "bun run test && bun run build"
   },
